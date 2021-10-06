@@ -22,7 +22,7 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "appointment_id")
-    private Integer appointmentId;
+    private Integer id;
 
     @Column(name = "appointmentName")
     private String appointmentName;

@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "User")
 @SQLDelete(sql = "UPDATE user SET is_delete = 1 WHERE user_id = ?")
 public class User {
 
@@ -47,9 +47,4 @@ public class User {
     private LocalDateTime updateDateTime;
 
 
-    @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL)
-    private List<Patient> patients = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL)
-    private List<Doctor> doctors = new ArrayList<>();
 }

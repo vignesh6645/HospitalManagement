@@ -42,7 +42,7 @@ public class UserServieceImplements implements UserInterface {
     @Override
     public User updateUser(UserDto userDTO) {
         User existUser = new User();
-        userRepository.findById(userDTO.getUserId());
+        userRepository.findById(userDTO.getId());
         existUser.setUserName(userDTO.getUserName());
         BCryptPasswordEncoder bCryptPasswordEncoder= new BCryptPasswordEncoder();
         existUser.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));

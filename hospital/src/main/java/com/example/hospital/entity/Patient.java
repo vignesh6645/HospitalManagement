@@ -44,6 +44,8 @@ public class Patient {
     @JoinColumn(name = "fk_user_id")
     private User userId;
 
+
+/*
     @OneToMany(mappedBy = "patientId",cascade = CascadeType.ALL)
-    private List<Patient> patients = new ArrayList<>();
+    private List<Patient> patients = new ArrayList<>();*/
 }

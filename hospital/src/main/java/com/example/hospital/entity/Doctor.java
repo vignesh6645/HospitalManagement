@@ -42,9 +42,6 @@ public class Doctor {
 
     @ManyToOne(cascade =CascadeType.ALL)
     @JoinColumn(name = "fk_user_id")
-    private User userId;
-
-    @OneToMany(mappedBy = "doctorId" , cascade = CascadeType.ALL)
-    private List<Doctor>doctors =new ArrayList<>();
+    private User user;
 
 }

@@ -8,8 +8,6 @@ import com.example.hospital.serviece.UserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RequestMapping("/user")
 @RestController
 public class UserController {
