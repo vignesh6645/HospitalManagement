@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="disease")
-@SQLDelete(sql = "UPDATE user SET is_delete = 1 WHERE user_id = ?")
+@Table(name="Disease")
+@SQLDelete(sql = "UPDATE Disease SET is_delete =1 WHERE disease_id= ?")
 public class Disease {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "disease_id")
     private Integer diseaseId;
 
-    @Column(name = "patientName")
+    @Column(name = "diseaseName",nullable = false)
     private String diseaseName;
 
     @Column(name = "is_active",columnDefinition = "integer default 0")

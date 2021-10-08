@@ -7,6 +7,8 @@ import com.example.hospital.serviece.DiseaseInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/disease")
@@ -16,7 +18,7 @@ public class DiseaseController {
     @Autowired
     private DiseaseInterface diseaseInterface;
 
-
+    @RolesAllowed(value = "ADMIN")
     @PostMapping("/create")
     public BaseResponse<Disease> addDiseaseInfo(@RequestBody DiseaseDto diseaseDTO) {
         BaseResponse<Disease> baseResponse=null;
@@ -25,20 +27,23 @@ public class DiseaseController {
 
     }
 
+    @RolesAllowed(value = "USER")
     @GetMapping("/getAll")
-    public BaseResponse<Disease> list(){
-        BaseResponse<Disease> baseResponse= null;
-        baseResponse = BaseResponse.<Disease>builder().Data((Disease) diseaseInterface.listAlldisease()).build();
+    public BaseResponse<List<Disease>> list(){
+        BaseResponse<List<Disease>> baseResponse= null;
+        baseResponse = BaseResponse.<List<Disease>>builder().Data( diseaseInterface.listAlldisease()).build();
         return baseResponse;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public BaseResponse<Disease> delete(@PathVariable int id) {
+    @RolesAllowed(value = "USER")
+    @DeleteMapping("/delete/{diseaseId}")
+    public String delete(@PathVariable Integer diseaseId) {
         BaseResponse<Disease> baseResponse= null;
-        baseResponse = BaseResponse.<Disease>builder().Data(diseaseInterface.deleteById(id)).build();
-        return baseResponse;
+        baseResponse = BaseResponse.<Disease>builder().Data(diseaseInterface.deleteById(diseaseId)).build();
+        return "Success";
     }
 
+    @RolesAllowed(value = "USER")
     @PutMapping("/update")
     public BaseResponse<Optional<Disease>> updateDiseaseById(@RequestBody DiseaseDto diseaseDTO){
         BaseResponse<Optional<Disease>>  baseResponse=null;

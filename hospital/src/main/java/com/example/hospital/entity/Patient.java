@@ -8,22 +8,20 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="patient")
-@SQLDelete(sql = "UPDATE user SET is_delete = 1 WHERE user_id = ?")
+@Table(name="Patient")
+@SQLDelete(sql = "UPDATE Patient SET is_delete =1 WHERE patient_id= ?")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "patient_id")
     private Integer patientId;
 
-    @Column(name = "patientName")
+    @Column(name = "patient_Name",nullable = false)
     private String patientName;
 
     @Column(name = "is_active", columnDefinition = "integer default 0")
@@ -42,10 +40,6 @@ public class Patient {
 
     @ManyToOne
     @JoinColumn(name = "fk_user_id")
-    private User userId;
+    private User users;
 
-
-/*
-    @OneToMany(mappedBy = "patientId",cascade = CascadeType.ALL)
-    private List<Patient> patients = new ArrayList<>();*/
 }

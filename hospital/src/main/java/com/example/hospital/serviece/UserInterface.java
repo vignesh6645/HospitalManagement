@@ -2,7 +2,10 @@ package com.example.hospital.serviece;
 
 import com.example.hospital.baseResponse.PageResponse;
 import com.example.hospital.dto.UserDto;
+import com.example.hospital.dto.UserRoleDto;
 import com.example.hospital.entity.User;
+
+import java.util.Optional;
 
 public interface UserInterface {
 
@@ -14,5 +17,8 @@ public interface UserInterface {
 
     PageResponse<User> GetUserWithPagination(int offset, int pageSize, String name);
 
-    User deleteUser(int id);
+    User deleteUser(Integer id);
+
+
+    UserRoleDto generateToken(UserRoleDto userRoleDTO);
 }

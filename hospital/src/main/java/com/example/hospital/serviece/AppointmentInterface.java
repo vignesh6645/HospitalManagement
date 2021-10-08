@@ -11,9 +11,9 @@ public interface AppointmentInterface {
 
 
 
-    Optional<Appointment> GetAppointmentById(Integer id);
+    Optional<Appointment> GetAppointmentById(Integer appointmentId);
 
-    Optional<Appointment> UpdateAppointmentById(AppointmentDto appointmentDTO);
+    Appointment UpdateAppointmentById(AppointmentDto appointmentDTO);
 
-    Appointment deleteById(int id);
+    Appointment deleteById(Integer appointmentId);
 }

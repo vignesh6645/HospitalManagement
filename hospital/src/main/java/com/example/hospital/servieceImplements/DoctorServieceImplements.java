@@ -4,6 +4,7 @@ import com.example.hospital.baseResponse.PageResponse;
 import com.example.hospital.dto.DoctorDto;
 import com.example.hospital.entity.Doctor;
 import com.example.hospital.entity.User;
+import com.example.hospital.exception.ControllerException;
 import com.example.hospital.repository.*;
 import com.example.hospital.serviece.DoctorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,12 @@ public class DoctorServieceImplements implements DoctorInterface {
             Optional<User> users=userRepository.findById(userDTO.getId());
             if (users.isPresent())
             {
-                doctor.setUser(users.get());
+                doctor.setUsers(users.get());
                 doctor.setDoctorId(doctorDTO.getDoctorId());
                 doctor.setDoctorName(doctorDTO.getDoctorName());
             }
-            else
-            {
-
+            else  {
+                throw new ControllerException("404","patient details not found");
             }
         });
         doctorRepository.save(doctor);
@@ -53,45 +53,33 @@ public class DoctorServieceImplements implements DoctorInterface {
     }
 
     @Override
-    public Optional<Doctor> GetDoctorById(int id) {
-        Optional<Doctor> doctor=doctorRepository.findById(id);
+    public Optional<Doctor> GetDoctorById(Integer doctorId) {
+        Optional<Doctor> doctor=doctorRepository.findById(doctorId);
 
         return doctor;
     }
 
     @Override
-    public Doctor deleteById(int id){
+    public Doctor deleteById(Integer doctorId){
         Doctor doctor = new Doctor();
-        doctorRepository.deleteById(id);
+        doctorRepository.deleteById(doctorId);
         return doctor;
     }
 
     @Override
-    public Optional<Doctor>  UpdateDoctorById(DoctorDto doctorDTO) {
-        Optional<Doctor> exitsDoctor = doctorRepository.findById(doctorDTO.getDoctorId());
-        if (exitsDoctor.isPresent())
-        {
-            exitsDoctor.get().setDoctorName(doctorDTO.getDoctorName());
-        }
-        else
-        {
-
-        }
-        doctorDTO.getUserId().forEach(userDTO -> {
-            Optional<User> users=userRepository.findById(userDTO.getId());
-            if (users.isPresent())
-            {
-                exitsDoctor.get().setUser(users.get());
-            }
-            else
-            {
-
-            }
+    public Doctor UpdateDoctor(DoctorDto doctorDto) {
+        Doctor exitsDoctor = doctorRepository.findById(doctorDto.getDoctorId()).orElse(null);
+        exitsDoctor.setDoctorName(doctorDto.getDoctorName());
+        doctorDto.getUserId().forEach(userDTO -> {
+            User users=userRepository.findById(userDTO.getId()).orElse(null);
+            exitsDoctor.setUsers(users);
 
         });
-        doctorRepository.save(exitsDoctor.get());
+        doctorRepository.save(exitsDoctor);
         return exitsDoctor;
     }
+
+
 
     @Override
     public PageResponse<Doctor> GetDoctorWithPagination(int offset, int pageSize, String doctorName) {
@@ -103,7 +91,7 @@ public class DoctorServieceImplements implements DoctorInterface {
             pageResponse.setRecordCount(doctors.getTotalPages());
         } catch (
                 NoSuchElementException e) {
-
+            throw new ControllerException("404","patient details not found");
         }
         return pageResponse;
     }

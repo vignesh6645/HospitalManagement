@@ -9,11 +9,11 @@ import java.util.Optional;
 public interface PatientInterface {
     Patient AddPatientInfo(PatientDto patientDTO);
 
-    Optional<Patient> GetPatientById(Integer id);
+    Patient GetPatientById(Integer patientId);
 
     Optional<Patient> UpdatePatientById(PatientDto patientDTO);
 
     PageResponse<Patient> GetPatientWithPagination(int offset, int pageSize, String patientName);
 
-    Patient deleteById(int id);
+    Patient deleteById(Integer patientId);
 }

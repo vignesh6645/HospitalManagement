@@ -8,22 +8,20 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name="Doctor")
-@SQLDelete(sql = "UPDATE user SET is_delete = 1 WHERE user_id = ?")
+@SQLDelete(sql = "UPDATE Doctor SET is_delete =1 WHERE doctor_id= ?")
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doctor_id")
     private Integer doctorId;
 
-    @Column(name = "doctorName",nullable = false)
+    @Column(name = "doctor_Name",nullable = false)
     private String doctorName;
 
     @Column(name = "is_active",columnDefinition = "integer default 0")
@@ -40,8 +38,8 @@ public class Doctor {
     @Column(name = "modified_at")
     private LocalDateTime updateDateTime;
 
-    @ManyToOne(cascade =CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "fk_user_id")
-    private User user;
+    private User users;
 
 }

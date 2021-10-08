@@ -15,5 +15,5 @@ public interface DiseaseInterface {
 
     Optional<Disease> UpdateDiseaseById(DiseaseDto diseaseDTO);
 
-    Disease deleteById(int id);
+    Disease deleteById(Integer diseaseId);
 }

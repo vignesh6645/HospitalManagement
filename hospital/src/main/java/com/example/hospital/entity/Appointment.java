@@ -6,29 +6,31 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "Appointment")
-@SQLDelete(sql = "UPDATE user SET is_delete = 1 WHERE user_id = ?")
-
+@SQLDelete(sql = "UPDATE Appointment SET is_delete =1 WHERE appointment_id= ?")
 public class Appointment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "appointment_id")
-    private Integer id;
+    private Integer appointmentId;
 
-    @Column(name = "appointmentName")
+    @Column(name = "appointment_name",nullable = false)
     private String appointmentName;
 
-    @Column(name = "appointmentTime")
-    private Timestamp appointmentTime;
+    @Column(name = "appointment_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd 'T' HH:mm:ss")
+    private Date appointmentTime;
 
     @Column(name = "is_active",columnDefinition = "integer default 0")
     private int isActive;

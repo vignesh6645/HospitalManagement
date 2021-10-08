@@ -4,6 +4,7 @@ import com.example.hospital.baseResponse.PageResponse;
 import com.example.hospital.dto.PatientDto;
 import com.example.hospital.entity.Patient;
 import com.example.hospital.entity.User;
+import com.example.hospital.exception.ControllerException;
 import com.example.hospital.repository.PatientRepository;
 import com.example.hospital.repository.UserRepository;
 import com.example.hospital.serviece.PatientInterface;
@@ -32,11 +33,13 @@ public class PatientServieceImplements implements PatientInterface {
         patient.setPatientName(patientDTO.getPatientName());
         Patient finalPatient = patient;
         patientDTO.getUserId().forEach(userDTO -> {
-            Optional<User> users=userRepository.findById(userDTO.getId());
-            if(users.isPresent())
-            {
-                finalPatient.setUserId(users.get());
-            }
+            User users=userRepository.findById(userDTO.getId()).orElse(null);
+           /* if(users.isPresent())
+            {*/
+                finalPatient.setUsers(users);
+            /*}else  {
+                throw new ControllerException("404","patient details not found");
+            }*/
 
         });
         patient.setPatientId(patientDTO.getPatientId());
@@ -47,36 +50,37 @@ public class PatientServieceImplements implements PatientInterface {
     }
 
     @Override
-    public Optional<Patient> GetPatientById(Integer id) {
-        Optional<Patient> patient=patientRepository.findById(id);
+    public Patient GetPatientById(Integer id) {
+        Patient patient=patientRepository.findById(id).orElse(null);
         return patient;
 
     }
 
     @Override
-    public Patient deleteById(int id){
+    public Patient deleteById(Integer patientId){
         Patient patient = new Patient();
-        userRepository.deleteById(id);
+         patientRepository.deleteById(patientId);
         return patient;
     }
 
     @Override
     public Optional<Patient> UpdatePatientById(PatientDto patientDTO) {
-        Optional<Patient> exitsPatient = patientRepository.findById(patientDTO.getPatientId());
+        Optional<Patient> exitsPatient = patientRepository.findByPatientId(patientDTO.getPatientId());
         if (exitsPatient.isPresent())
         {
             exitsPatient.get().setPatientName(patientDTO.getPatientName());
+        }else  {
+            throw new ControllerException("404","patient details not found");
         }
 
             patientDTO.getUserId().forEach(userDTO -> {
             Optional<User> users=userRepository.findById(userDTO.getId());
             if (users.isPresent())
             {
-                exitsPatient.get().setUserId(users.get());
+                exitsPatient.get().setUsers(users.get());
             }
-            else
-            {
-
+            else  {
+                throw new ControllerException("404","patient details not found");
             }
 
         });
@@ -93,7 +97,7 @@ public class PatientServieceImplements implements PatientInterface {
             pageResponse.setRecordCount(patients.getTotalPages());
         } catch (
                 NoSuchElementException e) {
-
+            throw new ControllerException("404","patient details not found");
         }
         return pageResponse;
     }

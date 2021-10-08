@@ -2,6 +2,7 @@ package com.example.hospital.servieceImplements;
 
 import com.example.hospital.dto.DiseaseDto;
 import com.example.hospital.entity.Disease;
+import com.example.hospital.exception.ControllerException;
 import com.example.hospital.repository.DiseaseRepository;
 import com.example.hospital.serviece.DiseaseInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,14 @@ public class DiseaseServieceImplements implements DiseaseInterface {
 
     @Override
     public List<Disease> listAlldisease() {
-        List<Disease> obj=diseaseRepository.findAll();
-        return obj;
+        List<Disease> disease=  diseaseRepository.findAll();
+        return disease;
     }
 
     @Override
-    public Disease deleteById(int id) {
+    public Disease deleteById(Integer diseaseId) {
         Disease disease = new Disease();
-        diseaseRepository.deleteById(id);
+        diseaseRepository.deleteById(diseaseId);
         return disease;
     }
 
@@ -47,9 +48,8 @@ public class DiseaseServieceImplements implements DiseaseInterface {
         {
             existDisease.get().setDiseaseName(diseaseDTO.getDiseaseName());
         }
-        else
-        {
-
+        else  {
+            throw new ControllerException("404","patient details not found");
         }
         diseaseRepository.save(existDisease.get());
         return existDisease;

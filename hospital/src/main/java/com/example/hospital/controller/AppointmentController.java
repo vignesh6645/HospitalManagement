@@ -18,6 +18,7 @@ public class AppointmentController {
     @Autowired
     private AppointmentInterface appointmentInterface;
 
+    @RolesAllowed(value = "USER")
     @PostMapping("/create")
     public BaseResponse<Appointment> addAppointmentInfo(@RequestBody AppointmentDto appointmentDto) {
         BaseResponse<Appointment> baseResponse=null;
@@ -25,23 +26,27 @@ public class AppointmentController {
         return baseResponse;
     }
 
-    @GetMapping("/appointmentId/{id}")
-    public BaseResponse<Optional<Appointment>> getAppointmentById(@PathVariable Integer id){
+    @RolesAllowed(value = "USER")
+    @GetMapping("/appointmentId/{appointmentId}")
+    public BaseResponse<Optional<Appointment>> getAppointmentById(@PathVariable Integer appointmentId){
         BaseResponse<Optional<Appointment>> baseResponse = null;
-        baseResponse = BaseResponse.<Optional<Appointment>>builder().Data(appointmentInterface.GetAppointmentById(id)).build();
+        baseResponse = BaseResponse.<Optional<Appointment>>builder()
+                .Data(appointmentInterface.GetAppointmentById(appointmentId)).build();
         return baseResponse;
     }
 
+    @RolesAllowed(value = "USER")
     @PutMapping("/update")
-    public BaseResponse<Optional<Appointment>> updateInfo(@RequestBody AppointmentDto appointmentDTO){
-        BaseResponse<Optional<Appointment>> baseResponse=null;
-        baseResponse = BaseResponse.<Optional<Appointment>>builder().Data(appointmentInterface.UpdateAppointmentById(appointmentDTO)).build();
+    public BaseResponse<Appointment> updateInfo(@RequestBody AppointmentDto appointmentDTO){
+        BaseResponse<Appointment> baseResponse=null;
+        baseResponse = BaseResponse.<Appointment>builder().Data(appointmentInterface.UpdateAppointmentById(appointmentDTO)).build();
         return baseResponse;
     }
-    @DeleteMapping("/delete/{id}")
-    public BaseResponse<Appointment> deleteAppointment(@PathVariable int id) {
+    @RolesAllowed(value = "USER")
+    @DeleteMapping("/delete/{appointmentId}")
+    public BaseResponse<Appointment> deleteAppointment(@PathVariable Integer appointmentId) {
         BaseResponse<Appointment> baseResponse = null;
-        baseResponse=BaseResponse.<Appointment>builder().Data(appointmentInterface.deleteById(id)).build();
+        baseResponse=BaseResponse.<Appointment>builder().Data(appointmentInterface.deleteById(appointmentId)).build();
         return baseResponse;
     }
 }
